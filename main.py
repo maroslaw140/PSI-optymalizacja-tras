@@ -1,8 +1,11 @@
+from classAlgorytmGenetyczny import AlgorytmGenetyczny
 from classKlient import Klient
 from classKoszt import Koszt
 import csv
+import random
 
 klienci = []
+oznaczenia_klientow = []
 
 with open('daneKlient.csv', newline='', encoding='utf-8') as plik_csv:
     czytnik_csv = csv.reader(plik_csv)
@@ -11,13 +14,15 @@ with open('daneKlient.csv', newline='', encoding='utf-8') as plik_csv:
         nowy_klient.przypisz(','.join(linia))
         klienci.append(nowy_klient)
 
-for klient in klienci:
-    print(f"Oznaczenie: {klient.oznaczenie}, Miasto: {klient.miasto}, Współrzędne: ({klient.wspolrzednaX}, {klient.wspolrzednaY})")
+        oznaczenia_klientow.append(nowy_klient.oznaczenie)
 
-liczbaKlientow = len(klienci)
+liczba_klientow = len(klienci)
+macierz_kosztow = Koszt.wczytaj_macierz_kosztow('daneKoszt.csv')
+wielkosc_populacji = liczba_klientow ** 2
 
+def kodowanie_genotypu():
+    random.shuffle(oznaczenia_klientow)
+    return oznaczenia_klientow.copy()
 
-# Przykładowe użycie metody statycznej
-nazwa_pliku = 'daneKoszt.csv'  # Zastąp 'twoj_plik.csv' właściwą nazwą pliku
-macierz = Koszt.wczytaj_macierz_kosztow(nazwa_pliku)
-print(macierz)
+poczatkowa_populacja = AlgorytmGenetyczny.kodowanie_genotypu(oznaczenia_klientow)
+
