@@ -1,6 +1,6 @@
 import random
 
-def generuj_populacje(tablica, wielkosc_populacji):
+def koduj_genotyp(tablica, wielkosc_populacji):
     poczatkowa_populacja = []
     for _ in range(wielkosc_populacji):
         chromosom = random.sample(tablica, len(tablica))

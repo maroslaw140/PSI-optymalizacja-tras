@@ -5,7 +5,6 @@ class Klient:
         self.wspolrzednaX = 0.0
         self.wspolrzednaY = 0.0
 
-
     def przypisz(self, linia):
         dane = linia.strip().split(',')
         if len(dane) == 4:

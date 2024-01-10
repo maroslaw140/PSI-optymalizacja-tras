@@ -5,39 +5,35 @@ import csv
 import random
 import folium
 
-wielkosc_populacji = 100
-liczba_pokolen = 1000
+wielkosc_populacji = 1000
 
+liczba_pokolen = 1000
 liczba_krzyzowan = 100
-rozmiar_turnieju = 50
-prawdopodobienstwo_mutacji = 0.1
-liczba_elit = 100
+rozmiar_turnieju = 5
+prawdopodobienstwo_mutacji = 0.2
+liczba_elit = 15
 
 # Warunki zatrzymania
 liczba_pokolen_bez_poprawy = 50
 poprzedni_najlepszy_wynik = float('inf')
 pokolenie_bez_poprawy = 0
 
-klienci = []
-oznaczenia_klientow = []
-
 macierz_kosztow = wczytaj_macierz_kosztow('daneKoszt.csv')
+klienci = {}
 
 with open('daneKlient.csv', newline='', encoding='utf-8') as plik_csv:
     czytnik_csv = csv.reader(plik_csv)
     for linia in czytnik_csv:
         nowy_klient = Klient()
         nowy_klient.przypisz(','.join(linia))
-        klienci.append(nowy_klient)
+        klienci[nowy_klient.oznaczenie] = nowy_klient
 
-        oznaczenia_klientow.append(nowy_klient.oznaczenie)
-
-populacja = generuj_populacje(oznaczenia_klientow, wielkosc_populacji)
+populacja = koduj_genotyp(list(klienci.keys()), wielkosc_populacji)
 
 for pokolenie in range(liczba_pokolen):
     wyniki_oceny = [sumuj_koszt(trasa, macierz_kosztow) for trasa in populacja]
 
-    # Selekcja turniejowa
+    # Selekcja turniejowa   
     nowa_populacja = selekcja_turniejowa(populacja, wyniki_oceny, rozmiar_turnieju)
 
     # Krzyżowanie jednopunktowe
@@ -47,7 +43,6 @@ for pokolenie in range(liczba_pokolen):
         dziecko1, dziecko2 = krzyzowanie_jednopunktowe(rodzic1, rodzic2)
         nowa_populacja.extend([dziecko1, dziecko2])
 
-
     # Mutacja
     for i in range(len(nowa_populacja)):
         nowa_populacja[i] = mutacja_zmiany_miast(nowa_populacja[i], prawdopodobienstwo_mutacji)
@@ -55,8 +50,10 @@ for pokolenie in range(liczba_pokolen):
     wyniki_nowej_populacji = [sumuj_koszt(trasa, macierz_kosztow) for trasa in nowa_populacja]
 
     # Elitaryzm
-    najlepsze_indeksy = sorted(range(len(wyniki_nowej_populacji)), key=lambda k: wyniki_nowej_populacji[k])[
-                        :liczba_elit]
+    indeksy_wynikow = range(len(wyniki_nowej_populacji))
+    posortowane_indeksy = sorted(indeksy_wynikow, key=lambda k: wyniki_nowej_populacji[k])
+    najlepsze_indeksy = posortowane_indeksy[:liczba_elit]
+
     nowa_populacja = [nowa_populacja[indeks] for indeks in najlepsze_indeksy]
 
     populacja = nowa_populacja
@@ -76,15 +73,19 @@ wyniki_oceny = [sumuj_koszt(trasa, macierz_kosztow) for trasa in populacja]
 najlepsze_rozwiazanie = populacja[wyniki_oceny.index(min(wyniki_oceny))]
 print(najlepsze_rozwiazanie)
 
-najlepsze_rozwiazanie = [klient.miasto for oznaczenie in najlepsze_rozwiazanie for klient in klienci if oznaczenie == klient.oznaczenie]
+najlepsze_rozwiazanie = [
+    klienci[oznaczenie].miasto
+    for oznaczenie in najlepsze_rozwiazanie
+]
 print(najlepsze_rozwiazanie)
 
 # Mapa
 miasta = {}
-for klient in klienci:
+for klient in klienci.values():
     miasto_klienta = klient.miasto
     wspolrzedne = [klient.wspolrzednaX, klient.wspolrzednaY]
     miasta[miasto_klienta] = wspolrzedne
+
 
 mapa = folium.Map(location=[50.6721, 17.9253], zoom_start=8)
 kolor = 'darkblue'

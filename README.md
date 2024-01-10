@@ -19,5 +19,6 @@ Kroki do wykonania:
 9.	Dokumentacja: Przygotuj dokumentację, która opisuje proces optymalizacji, użyte operatory genetyczne, wyniki eksperymentów i ocenę jakości optymalnej trasy dostaw.
 
 
+
 ### Mapa
 - `pip install folium`
