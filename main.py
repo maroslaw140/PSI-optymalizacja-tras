@@ -11,7 +11,7 @@ liczba_pokolen = 1000
 liczba_krzyzowan = 100
 rozmiar_turnieju = 5
 prawdopodobienstwo_mutacji = 0.2
-liczba_elit = 15
+liczba_elit = 150
 
 # Warunki zatrzymania
 liczba_pokolen_bez_poprawy = 50
