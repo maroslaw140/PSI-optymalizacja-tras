@@ -1,14 +1,14 @@
-from classKlient import Klient
-from koszt import *
 from algorytm_genetyczny import *
+from koszt import *
+from classKlient import Klient
 import csv
 import random
 import folium
 
 wielkosc_populacji = 100
-liczba_pokolen = 1000
+liczba_pokolen = 100
 
-liczba_krzyzowan = 500
+liczba_krzyzowan = 100
 rozmiar_turnieju = 20
 prawdopodobienstwo_mutacji = 0.01
 liczba_elit = 100
@@ -49,10 +49,10 @@ for pokolenie in range(liczba_pokolen):
         nowa_populacja[i] = mutacja_zmiany_miast(nowa_populacja[i], prawdopodobienstwo_mutacji)
 
     # Ocena jakości nowej populacji
-    wyniki_oceny_nowej_populacji = [sumuj_koszt(trasa, macierz_kosztow) for trasa in nowa_populacja]
+    wyniki_nowej_populacji = [sumuj_koszt(trasa, macierz_kosztow) for trasa in nowa_populacja]
 
     # Elitaryzm - wybór najlepszych rozwiązań do kolejnego pokolenia
-    najlepsze_indeksy = sorted(range(len(wyniki_oceny_nowej_populacji)), key=lambda k: wyniki_oceny_nowej_populacji[k])[
+    najlepsze_indeksy = sorted(range(len(wyniki_nowej_populacji)), key=lambda k: wyniki_nowej_populacji[k])[
                         :liczba_elit]
     nowa_populacja = [nowa_populacja[indeks] for indeks in najlepsze_indeksy]
 
@@ -62,6 +62,8 @@ for pokolenie in range(liczba_pokolen):
 # Ostateczna ocena jakości najlepszego rozwiązania
 wyniki_oceny = [sumuj_koszt(trasa, macierz_kosztow) for trasa in populacja]
 najlepsze_rozwiazanie = populacja[wyniki_oceny.index(min(wyniki_oceny))]
+
+print(najlepsze_rozwiazanie)
 
 # Przemapowanie oznaczeń klientów na nazwy miast
 najlepsze_rozwiazanie = [klient.miasto for oznaczenie in najlepsze_rozwiazanie for klient in klienci if oznaczenie == klient.oznaczenie]
@@ -76,7 +78,7 @@ for klient in klienci:
     miasta[miasto_klienta] = wspolrzedne
 
 # Tworzenie mapy w bibliotece Folium
-mapa = folium.Map(location=[52.237049, 19.017532], zoom_start=6)
+mapa = folium.Map(location=[50.6721, 17.9253], zoom_start=8)
 
 # Dodawanie znaczników na mapie dla każdego miasta
 for miasto, wspolrzedne in miasta.items():
@@ -90,6 +92,3 @@ for i in range(len(najlepsze_rozwiazanie) - 1):
 
 # Zapisanie mapy do pliku HTML
 mapa.save("mapa.html")
-
-
-
