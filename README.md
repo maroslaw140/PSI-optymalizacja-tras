@@ -17,3 +17,7 @@ Kroki do wykonania:
 7.	Prezentacja wyników: Po zakończeniu algorytmu genetycznego, przedstaw optymalną trasę dostaw, która minimalizuje koszt lub czas podróży. Możesz również wizualizować trasę na mapie dla lepszej prezentacji.
 8.	Optymalizacja i eksperymenty: możesz przeprowadzić eksperymenty z różnymi parametrami algorytmu genetycznego, takimi jak rozmiar populacji, współczynnik krzyżowania i mutacji, aby znaleźć optymalne ustawienia dla danego problemu.
 9.	Dokumentacja: Przygotuj dokumentację, która opisuje proces optymalizacji, użyte operatory genetyczne, wyniki eksperymentów i ocenę jakości optymalnej trasy dostaw.
+
+
+### Mapa
+- `pip install folium`
