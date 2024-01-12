@@ -1,14 +1,14 @@
 class Klient:
     def __init__(self):
-        self.oznaczenie = ""
-        self.miasto = ""
+        self.id = ""
+        self.nazwa = ""
         self.wspolrzednaX = 0.0
         self.wspolrzednaY = 0.0
 
     def przypisz(self, linia):
         dane = linia.strip().split(',')
         if len(dane) == 4:
-            self.oznaczenie, self.miasto, wspolrzednaX, wspolrzednaY = dane
+            self.id, self.nazwa, wspolrzednaX, wspolrzednaY = dane
             try:
                 self.wspolrzednaX = float(wspolrzednaX)
                 self.wspolrzednaY = float(wspolrzednaY)

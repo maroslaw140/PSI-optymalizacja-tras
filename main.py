@@ -1,5 +1,4 @@
 from algorytm_genetyczny import *
-from koszt import *
 from classKlient import Klient
 import csv
 import random
@@ -18,7 +17,6 @@ liczba_pokolen_bez_poprawy = 50
 poprzedni_najlepszy_wynik = float('inf')
 pokolenie_bez_poprawy = 0
 
-macierz_kosztow = wczytaj_macierz_kosztow('daneKoszt.csv')
 klienci = {}
 
 with open('daneKlient.csv', newline='', encoding='utf-8') as plik_csv:
@@ -26,7 +24,9 @@ with open('daneKlient.csv', newline='', encoding='utf-8') as plik_csv:
     for linia in czytnik_csv:
         nowy_klient = Klient()
         nowy_klient.przypisz(','.join(linia))
-        klienci[nowy_klient.oznaczenie] = nowy_klient
+        klienci[nowy_klient.id] = nowy_klient
+
+macierz_kosztow = generuj_macierz_kosztow(klienci)
 
 populacja = koduj_genotyp(list(klienci.keys()), wielkosc_populacji)
 
@@ -71,10 +71,9 @@ for pokolenie in range(liczba_pokolen):
 
 wyniki_oceny = [sumuj_koszt(trasa, macierz_kosztow) for trasa in populacja]
 najlepsze_rozwiazanie = populacja[wyniki_oceny.index(min(wyniki_oceny))]
-print(najlepsze_rozwiazanie)
 
 najlepsze_rozwiazanie = [
-    klienci[oznaczenie].miasto
+    klienci[oznaczenie].nazwa
     for oznaczenie in najlepsze_rozwiazanie
 ]
 print(najlepsze_rozwiazanie)
@@ -82,10 +81,9 @@ print(najlepsze_rozwiazanie)
 # Mapa
 miasta = {}
 for klient in klienci.values():
-    miasto_klienta = klient.miasto
+    miasto_klienta = klient.nazwa
     wspolrzedne = [klient.wspolrzednaX, klient.wspolrzednaY]
     miasta[miasto_klienta] = wspolrzedne
-
 
 mapa = folium.Map(location=[50.6721, 17.9253], zoom_start=8)
 kolor = 'darkblue'
