@@ -41,8 +41,8 @@ def generuj_macierz_kosztow(klienci):
             macierz_kosztow[klient1.id] = {}
             for klient2 in klienci.values():
                 if klient1 != klient2:
-                    koszt = pitagoras(klient1.wspolrzednaY, klient1.wspolrzednaX, klient2.wspolrzednaY,
-                                      klient2.wspolrzednaX)
+                    koszt = oblicz_odleglosc(klient1.wspolrzednaY, klient1.wspolrzednaX, klient2.wspolrzednaY,
+                                             klient2.wspolrzednaX)
                     macierz_kosztow[klient1.id][klient2.id] = koszt
 
     except Exception as e:
@@ -51,7 +51,7 @@ def generuj_macierz_kosztow(klienci):
     return macierz_kosztow
 
 
-def pitagoras(y1, x1, y2, x2):
+def oblicz_odleglosc(y1, x1, y2, x2):
     try:
         roznica_szerokosci = (y2 - y1) * 111
         roznica_dlugosci = (x2 - x1) * (111 * math.cos(math.radians(y1)))

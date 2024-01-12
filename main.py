@@ -4,13 +4,13 @@ import csv
 import random
 import folium
 
-wielkosc_populacji = 1000
+wielkosc_populacji = 1500
 
-liczba_pokolen = 1000
-liczba_krzyzowan = 100
+liczba_pokolen = 1500
+liczba_krzyzowan = 150
 rozmiar_turnieju = 5
-prawdopodobienstwo_mutacji = 0.2
-liczba_elit = 150
+prawdopodobienstwo_mutacji = 0.3
+liczba_elit = 220
 
 # Warunki zatrzymania
 liczba_pokolen_bez_poprawy = 50
